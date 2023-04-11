@@ -11,6 +11,7 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def destroy(exception):
+    """Function that closes the API"""
     storage.close()
 
 if __name__ == "__main__":
