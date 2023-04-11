@@ -81,7 +81,7 @@ class DBStorage:
             obj = cls.objects.get(id=id)
         except cls.DoesNotExist:
             return None
-        
+
         return obj
 
     def count(self, cls=None):
@@ -89,7 +89,6 @@ class DBStorage:
         objs = all(self.__objects)
         lenght = 0
 
-        print(objs)
         for key, value in objs:
             lenght += 1
         return lenght
