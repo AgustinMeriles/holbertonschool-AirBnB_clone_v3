@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""Shebang"""
+"""File appy.py"""
 from models import storage
-from api.v1.views import app_views
+from api.v1.views.__init__ import app_views
 from flask import Flask
 from os import getenv
 
