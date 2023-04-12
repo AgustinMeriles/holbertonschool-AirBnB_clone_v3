@@ -2,11 +2,12 @@
 """Shebang"""
 from api.v1.views import app_views
 from json import dumps
+from flask import jsonify
 
 
 @app_views.route("/status")
 def status():
     """Function that returns a JSON status"""
-    return dumps({
+    return jsonify({
         'status': 'OK'
         })
