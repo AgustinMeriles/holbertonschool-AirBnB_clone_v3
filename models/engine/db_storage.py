@@ -78,7 +78,7 @@ class DBStorage:
     def get(self, cls, id):
         """method to retrieve one object"""
         if cls and id:
-            obj = self.__session.query(cls).filter_by(id=id).all()
+            obj = self.__session.query(cls).filter_by(id=id).first()
             return obj
         return None
 
