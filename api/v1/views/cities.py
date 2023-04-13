@@ -10,8 +10,6 @@ from models import storage
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
 def get_cities(state_id):
     """returns citys for a state given"""
-
-
     states = storage.get(State, state_id)
     if states is None:
         abort(404)
@@ -28,8 +26,6 @@ def get_cities(state_id):
 @app_views.route('/cities/<city_id>', methods=['GET'])
 def cities(city_id):
     """returns city of id given"""
-
-
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
@@ -40,8 +36,6 @@ def cities(city_id):
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def post_city(state_id):
     """create a city and links to state"""
-
-
     data = request.get_json(silent=True)
     if data is None:
         return 'Not a JSON', 400
@@ -61,8 +55,6 @@ def post_city(state_id):
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def put_city(city_id):
     """updates given city"""
-
-
     city = storage.get(City, city_id)
 
     if city is None:
@@ -83,8 +75,6 @@ def put_city(city_id):
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def city_delete(city_id):
     """DELETE city if id is found"""
-
-
     city = storage.get(City, city_id)
     if city is None:
         return '{}', 404
