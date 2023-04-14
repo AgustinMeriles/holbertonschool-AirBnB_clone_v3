@@ -6,14 +6,13 @@ from models.amenity import Amenity
 from models import storage
 
 
-@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
-def get_amenity():
+@app_views.route('/amenities', methods=['GET'])
+def get_amenities():
     amenities = storage.all(Amenity).values()
     return jsonify([amenities.to_dict() for amenity in amenities])
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'],
-                 strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['GET'])
 def get_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
@@ -21,8 +20,7 @@ def get_amenity(amenity_id):
     return jsonify(amenities.to_dict())
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
-                 strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
 def delete_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
@@ -44,18 +42,17 @@ def create_amenity():
     return jsonify(amenities.to_dict()), 201
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['PUT'],
-                 strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'])
 def update_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
         abort(404)
-    data = request.get_json()
-    if not data:
+    if not request.is_json:
         abort(400, 'Not a JSON')
+    data = request.get_json()
     ignore_keys = ['id', 'created_at', 'updated_at']
     for key, value in data.items():
         if key not in ignore_keys:
             setattr(amenities, key, value)
-    amenities.save()
+    storage.save()
     return jsonify(amenities.to_dict()), 200
