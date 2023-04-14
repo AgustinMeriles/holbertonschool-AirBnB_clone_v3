@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+"""new view for State objects that handles all default RESTFul API actions"""
+from flask import jsonify, request, abort
+from api.v1.views import app_views
+from models.state import State
+from models import storage
+
+
+@app_views.route('/amenities', methods=['GET'])
+def get_states():
+    amenities = storage.all(Amenity).values()
+    return jsonify([amenities.to_dict() for amenity in amenities])
+
+
+@app_views.route('/amenities/<amenity_id>', methods=['GET'])
+def get_state(amenity_id):
+    amenities = storage.get(Amenity, amenity_id)
+    if not amenities:
+        abort(404)
+    return jsonify(amenities.to_dict())
+
+
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
+def delete_state(amenity_id):
+    amenities = storage.get(Amenity, amenity_id)
+    if not amenities:
+        abort(404)
+    storage.delete(amenities)
+    storage.save()
+    return jsonify({}), 200
+
+
+@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
+def create_state():
+    data = request.get_json()
+    if data is None:
+        abort(400, 'Not a JSON')
+    if 'name' not in data:
+        abort(400, 'Missing name')
+    amenities = State(**data)
+    amenities.save()
+    return jsonify(amenities.to_dict()), 201
+
+
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'])
+def update_state(amenity_id):
+    amenities = storage.get(Amenity, amenity_id)
+    if not amenities:
+        abort(404)
+    if not request.is_json:
+        abort(400, 'Not a JSON')
+    data = request.get_json()
+    ignore_keys = ['id', 'created_at', 'updated_at']
+    for key, value in data.items():
+        if key not in ignore_keys:
+            setattr(amenities, key, value)
+    storage.save()
+    return jsonify(amenities.to_dict()), 200
