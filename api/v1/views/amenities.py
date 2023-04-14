@@ -6,13 +6,14 @@ from models.amenity import Amenity
 from models import storage
 
 
-@app_views.route('/amenities', methods=['GET'])
+@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def get_amenities():
     amenities = storage.all(Amenity).values()
     return jsonify([amenities.to_dict() for amenity in amenities])
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
+                 strict_slashes=False)
 def get_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
