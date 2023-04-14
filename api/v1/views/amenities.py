@@ -15,8 +15,8 @@ def get_amenities():
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_amenity(amenity_id):
-    amenities = storage.get(Amenity, amenity_id)
-    if not amenities:
+    amenity = storage.get(Amenity, amenity_id)
+    if not amenity:
         abort(404)
     return jsonify(amenity.to_dict())
 
@@ -47,8 +47,8 @@ def create_amenity():
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
                  strict_slashes=False)
 def update_amenity(amenity_id):
-    amenities = storage.get(Amenity, amenity_id)
-    if not amenities:
+    amenity = storage.get(Amenity, amenity_id)
+    if not amenity:
         abort(404)
     if not request.is_json:
         abort(400, 'Not a JSON')
