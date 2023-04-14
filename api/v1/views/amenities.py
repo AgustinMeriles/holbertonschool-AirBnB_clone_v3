@@ -9,7 +9,7 @@ from models import storage
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def get_amenities():
     amenities = storage.all(Amenity).values()
-    return jsonify([amenities.to_dict() for amenity in amenities])
+    return jsonify([amenity.to_dict() for amenity in amenities])
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
@@ -18,7 +18,7 @@ def get_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
         abort(404)
-    return jsonify(amenities.to_dict())
+    return jsonify(amenity.to_dict())
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
@@ -41,7 +41,7 @@ def create_amenity():
         abort(400, 'Missing name')
     amenities = Amenity(**data)
     amenities.save()
-    return jsonify(amenities.to_dict()), 201
+    return jsonify(amenity.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
@@ -58,4 +58,4 @@ def update_amenity(amenity_id):
         if key not in ignore_keys:
             setattr(amenities, key, value)
     storage.save()
-    return jsonify(amenities.to_dict()), 200
+    return jsonify(amenity.to_dict()), 200
