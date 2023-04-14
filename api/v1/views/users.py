@@ -58,6 +58,6 @@ def update_user(user_id):
     ignore_keys = ['id', 'email', 'created_at', 'updated_at']
     for key, value in data.items():
         if key not in ignore_keys:
-            setattr(amenity, key, value)
+            setattr(user, key, value)
     storage.save()
-    return jsonify(amenity.to_dict()), 200
+    return jsonify(user.to_dict()), 200
