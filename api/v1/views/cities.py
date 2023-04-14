@@ -33,7 +33,8 @@ def cities(city_id):
     return jsonify(city.to_dict()), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'])
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def post_city(state_id):
     """create a city and links to state"""
     data = request.get_json(silent=True)
