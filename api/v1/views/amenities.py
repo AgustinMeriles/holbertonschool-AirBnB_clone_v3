@@ -2,18 +2,18 @@
 """new view for State objects that handles all default RESTFul API actions"""
 from flask import jsonify, request, abort
 from api.v1.views import app_views
-from models.state import State
+from models.amenity import Amenity
 from models import storage
 
 
 @app_views.route('/amenities', methods=['GET'])
-def get_states():
+def get_amenity():
     amenities = storage.all(Amenity).values()
     return jsonify([amenities.to_dict() for amenity in amenities])
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'])
-def get_state(amenity_id):
+def get_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
         abort(404)
@@ -21,7 +21,7 @@ def get_state(amenity_id):
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
-def delete_state(amenity_id):
+def delete_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
         abort(404)
@@ -31,19 +31,19 @@ def delete_state(amenity_id):
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
-def create_state():
+def create_amenity():
     data = request.get_json()
     if data is None:
         abort(400, 'Not a JSON')
     if 'name' not in data:
         abort(400, 'Missing name')
-    amenities = State(**data)
+    amenities = Amenity(**data)
     amenities.save()
     return jsonify(amenities.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'])
-def update_state(amenity_id):
+def update_amenity(amenity_id):
     amenities = storage.get(Amenity, amenity_id)
     if not amenities:
         abort(404)
