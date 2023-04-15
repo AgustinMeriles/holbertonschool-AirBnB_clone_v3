@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """File appy.py"""
-from models import storage
 from api.v1.views import app_views
+from models import storage
 from flask import Flask, jsonify
 from os import getenv
 
@@ -18,6 +18,7 @@ def destroy(exception):
 
 @app.errorhandler(404)
 def not_found(error):
+    """404 error handler"""
     return jsonify({"error": "Not found"}), 404
 
 
